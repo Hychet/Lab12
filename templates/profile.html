@@ -3,7 +3,7 @@
 	<head>
 		<title>Profile</title>
 		<meta charset="utf-8">
-        <link rel="stylesheet" href="../styles/profile.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	</head>
@@ -12,7 +12,7 @@
         <div class="container-full">
             <div class="col-xs-6">
                 <!--<center><h3>Feed</h3></center>-->
-                <center><img src="../data/redditLogo.png" width="88px" height="30px" class="redditLogo"></center>
+                <center><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></center>
             </div>
             <div id="createLink" class="col-xs-6">
                 <center><h3>Create Post</h3></center>
@@ -40,7 +40,7 @@
                     <p>paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph </p>
                     <div class="postFooter">
                         <div class="col-xs-6">
-                            <p><img src="../data/Upvote.png" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="../data/Downvote.png" width="15px" height="15px">&nbsp&nbsp512</p>
+                            <p><img src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp512</p>
                         </div>
                         <div class="col-xs-6">
                             <p class="timeStamp">8 hours ago</p>

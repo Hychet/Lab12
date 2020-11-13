@@ -3,7 +3,7 @@
 	<head>
 		<title>Register</title>
 		<meta charset="utf-8">
-        <link rel="stylesheet" href="../styles/register.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/register.css') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	</head>
@@ -12,7 +12,7 @@
         <div class="container-full">
             <div class="col-xs-6">
                 <!--<center><h3>Feed</h3></center>-->
-                <center><img src="../data/redditLogo.png" width="88px" height="30px" class="redditLogo"></center>
+                <center><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></center>
             </div>
             <div id="createLink" class="col-xs-6">
                 <center><h3>Register</h3></center>
