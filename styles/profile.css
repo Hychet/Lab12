@@ -1,0 +1,81 @@
+html {
+    background-color: #DAE0E6;
+    width: 100%;
+    font-family: Verdana, sans-serif;
+}
+
+body {
+    width: 100%;
+    font-family: Verdana, sans-serif;
+}
+
+.row {
+    background-color: #DAE0E6;
+    font-family: Verdana, sans-serif;
+}
+
+.col-xs-8 {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: thin;
+    font-family: Verdana, sans-serif;
+}
+
+.col-xs-10 {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    font-family: Verdana, sans-serif;
+}
+
+.titleDeleteRow {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    font-family: Verdana, sans-serif;
+}
+
+.delete {
+    padding-top: 10px;
+    font-family: Verdana, sans-serif;
+}
+
+#createLink {
+    text-align: center;
+    font-family: Verdana, sans-serif;
+}
+
+.postFooter {
+    padding-top: 10px;
+    border-top: solid;
+    border-width: thin;
+    font-family: Verdana, sans-serif;
+}
+
+.votingImages {
+    padding-left: 0px;
+    font-family: Verdana, sans-serif;
+}
+
+.col-xs-6 {
+    float: left;
+    font-family: Verdana, sans-serif;
+}
+
+.timeStamp {
+    float: right;
+    font-family: Verdana, sans-serif;
+}
+
+.card {
+    background-color: #DAE0E6;
+    font-family: Verdana, sans-serif;
+}
+
+.card-body {
+    background-color: #DAE0E6;
+    font-family: Verdana, sans-serif;
+}
+
+.redditLogo {
+    margin-top: 17px;
+}
