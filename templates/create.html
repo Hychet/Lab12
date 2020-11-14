@@ -28,13 +28,13 @@
                 </div>
                 <div class="col-xs-8">
                     <div class = "d-flex align-self-center mainBlock">
-                        <form action="">
+                        <form action="{{ '/' + hashedcode + '/submit_post' }}" method="POST" id = "form">
                             <br>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Title">
                             <br>
-                            <textarea class="form-control" rows="4" placeholder="Content"></textarea>
+                            <textarea class="form-control" rows="4" name="content" placeholder="Content"></textarea>
                             <br>
-                        <button type="button" class="btn btn-primary">Post</button>
+                            <input type="submit" class="btn btn-primary" value="Post">
                         </form>
                     </div>
                 <div class="col-xs-2">

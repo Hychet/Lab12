@@ -10,17 +10,20 @@
 
 	<body>
         <div class="container-full">
-            <div class="col-xs-6">
+            <div class="col-xs-2">
                 <!--<center><h3>Feed</h3></center>-->
-                <center><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></center>
+                <img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo">
+            </div>
+            <div class="col-xs-4">
+                <h3>{{username}}'s Profile</h3>
             </div>
             <div id="createLink" class="col-xs-6">
-                <center><h3>Create Post</h3></center>
+                <center><a href="/{{hashedcode}}/create"><h3>Create Post</h3></a></center>
             </div>
         </div>
 
         <!-- START FOR LOOP HERE -->
-
+        {% for post in posts %}
         <div class="card">
             <div class="card-body">
                 <br>
@@ -30,20 +33,20 @@
                     <div class="container-full">
                         <div class="titleDeleteRow row">
                             <div class="col-xs-10">
-                                <h4>Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title Title </h4>
+                                <h4>{{post.title}}</h4>
                             </div>
                             <div class="delete col-xs-2">
                                 <center><p>delete</p></center>
                             </div>
                         </div>
                     </div>
-                    <p>paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph paragraph </p>
+                    <p>{{post.content}}</p>
                     <div class="postFooter">
                         <div class="col-xs-6">
-                            <p><img src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp512</p>
+                            <p><img src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp{{post.score}}</p>
                         </div>
                         <div class="col-xs-6">
-                            <p class="timeStamp">8 hours ago</p>
+                            <p class="timeStamp">{{post.dateposted}}</p>
                         </div>
                     </div>
                 </div>
@@ -52,7 +55,7 @@
                 <br>
             </div>
         </div>
-
+        {% endfor %}
         <!-- END FOR LOOP HERE -->
 
 	</body>
