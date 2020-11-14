@@ -15,9 +15,10 @@ app = flask.Flask(__name__)
 app.static_folder = app.root_path
 hdb = sqlite3_helper.SqliteDB(db_path=config.PATH_DATABASE, row_type="dict", placeholder="$", commit_every_query=True)
 
-@app.route("/profile", methods=['GET', 'POST'])
-def profile():
-    return flask.render_template('profile.html')
+@app.route("/<hashedcode>/profile", methods=['GET', 'POST'])
+def profile(hashedcode):
+    username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
+    return flask.render_template('profile.html', username=username)
 
 @app.route("/create", methods=['GET', 'POST'])
 def create():
@@ -29,17 +30,19 @@ def register():
 
 @app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
 def feed(hashedcode):
-    return flask.render_template('feed.html', hashedcode = hashedcode)
+    username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
+    return flask.render_template('feed.html', username=username, hashedcode=int(hashedcode))
 
 @app.route("/submit", methods=['POST'])
 def submit_register():
     if len(hdb.select(["users"], what="username", username=flask.request.form.get('username'))) == 0:
         hashedcode = hash(flask.request.form.get('username'))
         hdb.insert("users", username=flask.request.form.get('username'), hash=hashedcode)
-        print(hdb.select(['users']))
+        # print(hdb.select(['users']))
     else:
-        hashedcode = hash(hdb.select(["users"], what="username", username=flask.request.form.get('username'))[0]['username'])
-    return flask.redirect(flask.url_for("." + str(hashedcode) + "/feed"))
+        hashedcode = hdb.select(["users"], what="hash", username=flask.request.form.get('username'))[0]['hash']
+    print(hdb.select(['users']))
+    return flask.redirect(flask.url_for(".feed", hashedcode=str(hashedcode)))
 
 # @app.route("/form_submit", methods=['POST'])
 # def submit_form():
