@@ -3,6 +3,8 @@ import os  # List of module import statements
 import sys  # Each one on a line
 import flask
 import pysqlite3 as sqlite3
+import sqlite3_helper
+import config
 
 # ######################################################
 # No Module - Level Variables or Statements !
@@ -11,6 +13,7 @@ import pysqlite3 as sqlite3
 
 app = flask.Flask(__name__)
 app.static_folder = app.root_path
+hdb = sqlite3_helper.SqliteDB(db_path=config.PATH_DATABASE, row_type="dict", placeholder="$", commit_every_query=True)
 
 @app.route("/profile", methods=['GET', 'POST'])
 def profile():
@@ -23,6 +26,20 @@ def create():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     return flask.render_template('register.html')
+
+@app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
+def feed(hashedcode):
+    return flask.render_template('feed.html', hashedcode = hashedcode)
+
+@app.route("/submit", methods=['POST'])
+def submit_register():
+    if len(hdb.select(["users"], what="username", username=flask.request.form.get('username'))) == 0:
+        hashedcode = hash(flask.request.form.get('username'))
+        hdb.insert("users", username=flask.request.form.get('username'), hash=hashedcode)
+        print(hdb.select(['users']))
+    else:
+        hashedcode = hash(hdb.select(["users"], what="username", username=flask.request.form.get('username'))[0]['username'])
+    return flask.redirect(flask.url_for("." + str(hashedcode) + "/feed"))
 
 # @app.route("/form_submit", methods=['POST'])
 # def submit_form():
@@ -81,4 +98,6 @@ def register():
 # We will NOT look into its content .
 # ######################################################
 if __name__ == "__main__":
+    # hdb.insert("users", username='sriniv62', hash="", id=5)
+    # print(hdb.select(["users"], what="*", order="id DESC", limit=1))
     app.run()
