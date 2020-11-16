@@ -48,7 +48,10 @@ def submit_register():
     except sqlite3_helper.DBItemNotFoundError:
         hdb.insert(('users'), username=flask.request.form.get('username'), hash=hash(flask.request.form.get('username')))
         row = hdb.select_row(('users'), username=flask.request.form.get('username'))
-    return flask.redirect(flask.url_for(".feed", hashedcode=row['hash']))
+    # return flask.redirect(flask.url_for(".feed", hashedcode=row['hash']))
+    
+    #VVVV FOR PHASE 1 DEMO ONLY VVVV
+    return flask.redirect(flask.url_for(".profile", hashedcode=row['hash']))
 
 @app.route("/<hashedcode>/submit_post", methods=['POST'])
 def submit_post(hashedcode):
