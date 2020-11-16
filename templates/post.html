@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
+    <div class="container-full">
+        <div class="col-xs-6">
+            <!--<center><h3>Feed</h3></center>-->
+            <center><a href="../{{hashedcode}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a></center>
+        </div>
+        <div id="createLink" class="col-xs-6">
+            <center><h3>Just Posted</h3></center>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <br>
@@ -21,7 +30,7 @@
                             <h4>{{title}}</h4>
                         </div>
                         <div class="col-xs-2">
-                            <h4>{{poster}}</h4>
+                            <h4><a href="../{{hashedcode}}/profile">{{poster}}</a></h4>
                         </div>
                     </div>
                 </div>

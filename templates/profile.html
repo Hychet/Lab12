@@ -12,7 +12,7 @@
         <div class="container-full">
             <div class="col-xs-2">
                 <!--<center><h3>Feed</h3></center>-->
-                <img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo">
+                <a href="../{{hashedcode}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
             </div>
             <div class="col-xs-4">
                 <h3>{{username}}'s Profile</h3>
@@ -24,8 +24,8 @@
 
         <!-- START FOR LOOP HERE -->
         {% for post in posts %}
-        <div class="card">
-            <div class="card-body">
+        <div class="card container-fluid">
+            <div class="card-body row">
                 <br>
                 <div class="col-xs-2">
                 </div>
@@ -33,7 +33,7 @@
                     <div class="container-full">
                         <div class="titleDeleteRow row">
                             <div class="col-xs-10">
-                                <h4>{{post.title}}</h4>
+                                <h4><a href="/posts/{{post.id}}">{{post.title}}</a></h4>
                             </div>
                             <div class="delete col-xs-2">
                                 <center><p>delete</p></center>

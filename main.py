@@ -33,7 +33,8 @@ def register():
 @app.route("/posts/<postid>", methods=['GET', 'POST'])
 def post(postid):
     row = hdb.select_row(['posts'], id=int(postid))
-    return flask.render_template('post.html', poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'])
+    hash = hdb.select_row(['users'], username=row['poster'])['hash']
+    return flask.render_template('post.html', poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'], hashedcode=hash)
 
 @app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
 def feed(hashedcode):
@@ -61,4 +62,5 @@ def submit_post(hashedcode):
 # We will NOT look into its content .
 # ######################################################
 if __name__ == "__main__":
-    app.run()
+    app.run(port=5678, host='127.0.0.1', debug=True, use_evalex=False)
+    #app.run()
