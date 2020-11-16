@@ -58,7 +58,7 @@ def submit_post(hashedcode):
     username = hdb.select_row(["users"], what="username", hash=int(hashedcode))['username']
     rowid = hdb.insert("posts", return_row_id=True, poster=username, title=flask.request.form.get('title'), content=flask.request.form.get('content'), score=0, dateposted=datetime.now().isoformat())
     print(hdb.select(['posts'])) # don't get rid of this
-    return flask.redirect(flask.url_for(".post", postid=rowid))
+    return flask.redirect(flask.url_for(".profile", hashedcode=hashedcode))
 
 
 # This block is optional and can be used for testing .
