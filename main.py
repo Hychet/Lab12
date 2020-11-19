@@ -20,6 +20,7 @@ hdb = sqlite3_helper.SqliteDB(db_path=config.PATH_DATABASE, row_type="dict", pla
 def profile(hashedcode):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
     posts = hdb.select(['posts'], poster=username)
+
     return flask.render_template('profile.html', username=username, hashedcode=hashedcode, posts=posts)
 
 @app.route("/<hashedcode>/create", methods=['GET', 'POST'])
@@ -30,11 +31,16 @@ def create(hashedcode):
 def register():
     return flask.render_template('register.html')
 
-@app.route("/posts/<postid>", methods=['GET', 'POST'])
-def post(postid):
+@app.route("/<hashedcode>/posts/<postid>", methods=['GET', 'POST'])
+def post(hashedcode,postid):
     row = hdb.select_row(['posts'], id=int(postid))
-    hash = hdb.select_row(['users'], username=row['poster'])['hash']
-    return flask.render_template('post.html', poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'], hashedcode=hash)
+    username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
+    posterHash = hdb.select_row(['users'], username=row['poster'])['hash']
+    try:
+        userVote = hdb.select_row(['votes'], username=username, postid=postid)['vote']
+    except sqlite3_helper.DBItemNotFoundError:
+        userVote = 0
+    return flask.render_template('post.html', postid=postid, posterHash=posterHash, userHash=hashedcode, userVote=userVote, poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'])
 
 @app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
 def feed(hashedcode):
@@ -60,6 +66,14 @@ def submit_post(hashedcode):
     print(hdb.select(['posts'])) # don't get rid of this
     return flask.redirect(flask.url_for(".profile", hashedcode=hashedcode))
 
+@app.route("/vote", methods=['POST'])
+def vote():
+    username = hdb.select_row(["users"], what="username", hash=int(flask.request.form.get('voterHash')))['username']
+    # if len(hdb.select(['votes'], postid=flask.request.form.get('postid'), username=username)) > 0: # if the voter has already voted on this post
+    #     hdb.update('votes')
+    hdb.upsert('votes', {"postid" : flask.request.form.get('postid'), "username" : username}, postid=flask.request.form.get('postid'), username=username, vote=flask.request.form.get('vote'))
+    print(hdb.select(['votes']))
+    return "ok"
 
 # This block is optional and can be used for testing .
 # We will NOT look into its content .

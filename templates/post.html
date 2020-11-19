@@ -7,12 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/post.js') }}"></script>
+
+    <meta id="data" data-userhash="{{userHash}}" data-postid="{{postid}}" data-uservote="{{userVote}}">
 </head>
 <body>
     <div class="container-full">
         <div class="col-xs-6">
             <!--<center><h3>Feed</h3></center>-->
-            <center><a href="../{{hashedcode}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a></center>
+            <center><a href="../{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a></center>
         </div>
         <div id="createLink" class="col-xs-6">
             <center><h3>Just Posted</h3></center>
@@ -30,14 +34,14 @@
                             <h4>{{title}}</h4>
                         </div>
                         <div class="col-xs-2">
-                            <h4><a href="../{{hashedcode}}/profile">{{poster}}</a></h4>
+                            <h4>{{poster}}</h4>
                         </div>
                     </div>
                 </div>
                 <p>{{content}}</p>
                 <div class="postFooter">
                     <div class="col-xs-6">
-                        <p><img src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp{{score}}</p>
+                        <p><a><img id="upvote" class="votingImages" src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px"></a>&nbsp&nbsp<img id="downvote" class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp{{score}}</p>
                     </div>
                     <div class="col-xs-6">
                         <p class="timeStamp">Posted {{dateposted}} ago</p>

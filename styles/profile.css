@@ -54,6 +54,7 @@ body {
 .votingImages {
     padding-left: 0px;
     font-family: Verdana, sans-serif;
+    cursor:pointer;
 }
 
 .col-xs-6 {

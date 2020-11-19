@@ -755,7 +755,7 @@ class SqliteDB(object):
 		return tuple(r["name"] for r in rows if except_primary_key is False or r["pk"]==0)
 	
 	def _integrity_error_is_due_to_column_nonuniqueness(self, e):
-		message = e.message
+		message = str(e)
 		mo = re.match("column (.+) is not unique", message)
 		if mo is None:
 			mo = re.match("columns (.+) are not unique", message)
