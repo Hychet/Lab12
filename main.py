@@ -40,6 +40,7 @@ def post(hashedcode,postid):
         userVote = hdb.select_row(['votes'], username=username, postid=postid)['vote']
     except sqlite3_helper.DBItemNotFoundError:
         userVote = 0
+    print(userVote)
     return flask.render_template('post.html', postid=postid, posterHash=posterHash, userHash=hashedcode, userVote=userVote, poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'])
 
 @app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
