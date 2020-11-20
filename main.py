@@ -6,6 +6,7 @@ import pysqlite3 as sqlite3
 import sqlite3_helper
 import config
 from datetime import datetime
+import json
 
 # ######################################################
 # No Module - Level Variables or Statements !
@@ -20,8 +21,14 @@ hdb = sqlite3_helper.SqliteDB(db_path=config.PATH_DATABASE, row_type="dict", pla
 def profile(hashedcode):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
     posts = hdb.select(['posts'], poster=username)
-
-    return flask.render_template('profile.html', username=username, hashedcode=hashedcode, posts=posts)
+    votes = hdb.select('votes')
+    for post in posts:
+        try:
+            post['userVote'] = hdb.select_row('votes', username=username, postid=post['id'])['vote']
+        except sqlite3_helper.DBItemNotFoundError:
+            post['userVote'] = 0
+    postsJSON = json.dumps(posts)
+    return flask.render_template('profile.html', username=username, userHash=hashedcode, posts=posts, postsJSON=postsJSON)
 
 @app.route("/<hashedcode>/create", methods=['GET', 'POST'])
 def create(hashedcode):
@@ -37,7 +44,7 @@ def post(hashedcode,postid):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
     posterHash = hdb.select_row(['users'], username=row['poster'])['hash']
     try:
-        userVote = hdb.select_row(['votes'], username=username, postid=postid)['vote']
+        userVote = hdb.select_row('votes', username=username, postid=int(postid))['vote']
     except sqlite3_helper.DBItemNotFoundError:
         userVote = 0
     print(userVote)
@@ -70,9 +77,9 @@ def submit_post(hashedcode):
 @app.route("/vote", methods=['POST'])
 def vote():
     username = hdb.select_row(["users"], what="username", hash=int(flask.request.form.get('voterHash')))['username']
-    # if len(hdb.select(['votes'], postid=flask.request.form.get('postid'), username=username)) > 0: # if the voter has already voted on this post
-    #     hdb.update('votes')
-    hdb.upsert('votes', {"postid" : flask.request.form.get('postid'), "username" : username}, postid=flask.request.form.get('postid'), username=username, vote=flask.request.form.get('vote'))
+    hdb.upsert('votes', {"postid" : flask.request.form.get('postid'), "username" : username}, postid=int(flask.request.form.get('postid')), username=username, vote=flask.request.form.get('vote'))
+    newScore = hdb.select_row('votes', what="sum(vote)", postid=int(flask.request.form.get('postid')))['sum(vote)']
+    hdb.update('posts', {'score' : newScore}, id=int(flask.request.form.get('postid')))
     print(hdb.select(['votes']))
     return "ok"
 

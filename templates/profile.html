@@ -6,19 +6,23 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
+
+        <meta id="data" data-userhash="{{userHash}}" data-posts="{{postsJSON}}">
 	</head>
 
 	<body>
         <div class="container-full">
             <div class="col-xs-2">
                 <!--<center><h3>Feed</h3></center>-->
-                <a href="../{{hashedcode}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
+                <a href="/{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
             </div>
             <div class="col-xs-4">
                 <h3>{{username}}'s Profile</h3>
             </div>
             <div id="createLink" class="col-xs-6">
-                <center><a href="/{{hashedcode}}/create"><h3>Create Post</h3></a></center>
+                <center><a href="/{{userHash}}/create"><h3>Create Post</h3></a></center>
             </div>
         </div>
 
@@ -33,7 +37,7 @@
                     <div class="container-full">
                         <div class="titleDeleteRow row">
                             <div class="col-xs-10">
-                                <h4><a href="/{{hashedcode}}/posts/{{post.id}}">{{post.title}}</a></h4>
+                                <h4><a href="/{{userHash}}/posts/{{post.id}}">{{post.title}}</a></h4>
                             </div>
                             <div class="delete col-xs-2">
                                 <center><p>delete</p></center>
@@ -43,7 +47,12 @@
                     <p>{{post.content}}</p>
                     <div class="postFooter">
                         <div class="col-xs-6">
-                            <p><img src="{{ url_for('static', filename='data/Upvote.png') }}" width="15px" height="15px">&nbsp&nbsp<img class="votingImages" src="{{ url_for('static', filename='data/Downvote.png') }}" width="15px" height="15px">&nbsp&nbsp{{post.score}}</p>
+                            <p>
+                                <img id="{{'u' ~ loop.index}}" class="votingImages upvote" src="../../../static/data/Upvote.png" width="15px" height="15px">
+                                &nbsp
+                                <img id="{{'d' ~ loop.index}}" class="votingImages downvote" src="../../../static/data/Downvote.png" width="15px" height="15px">
+                                <span id="{{'s' ~ loop.index}}" class="score"></span>
+                            </p>
                         </div>
                         <div class="col-xs-6">
                             <p class="timeStamp">{{post.dateposted}}</p>

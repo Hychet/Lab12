@@ -16,7 +16,7 @@
     <div class="container-full">
         <div class="col-xs-6">
             <!--<center><h3>Feed</h3></center>-->
-            <center><a href="../{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a></center>
+            <center><a href="/{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a></center>
         </div>
         <div id="createLink" class="col-xs-6">
             <center><h3>Just Posted</h3></center>
@@ -43,7 +43,7 @@
                     <div class="col-xs-6">
                         <p>
                             <img id="upvote" class="votingImages" src="../../../static/data/Upvote.png" width="15px" height="15px">
-                            &nbsp&nbsp
+                            &nbsp
                             <img id="downvote" class="votingImages" src="../../../static/data/Downvote.png" width="15px" height="15px">
                             <span id="score"></span>
                         </p>
