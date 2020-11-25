@@ -3,12 +3,69 @@
 	<head>
 		<title>Feed</title>
 		<meta charset="utf-8">
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='styles/register.css') }}">-->
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
+
+        <meta id="data" data-userhash="{{userHash}}" data-posts="{{postsJSON}}">
 	</head>
 
-    <body>
-		<a href="/{{hashedcode}}/profile">{{username}}</a>
-    </body>
+	<body>
+        <div class="container-full">
+            <div class="col-xs-2">
+                <!--<center><h3>Feed</h3></center>-->
+                <a href="/{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
+            </div>
+            <div class="col-xs-4">
+                <h3>{{username}}'s Feed</h3>
+            </div>
+            <div id="createLink" class="col-xs-6">
+                <center><a href="/{{userHash}}/profile"><h3>Profile</h3></a></center>
+            </div>
+        </div>
+
+        <!-- START FOR LOOP HERE -->
+        {% for post in posts %}
+        <div class="card container-fluid">
+            <div class="card-body row">
+                <br>
+                <div class="col-xs-2">
+                </div>
+                <div class="col-xs-8">
+                    <div class="container-full">
+                        <div class="titleDeleteRow row">
+                            <div class="col-xs-10">
+                                <h4><a href="/{{userHash}}/posts/{{post.id}}">{{post.title}}</a></h4>
+                            </div>
+                            <div class="delete col-xs-2">
+                                <center><p>delete</p></center>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{post.content}}</p>
+                    <div class="postFooter">
+                        <div class="col-xs-6">
+                            <p>
+                                <img id="{{'u' ~ loop.index}}" class="votingImages upvote" src="../../../static/data/Upvote.png" width="15px" height="15px">
+                                &nbsp
+                                <img id="{{'d' ~ loop.index}}" class="votingImages downvote" src="../../../static/data/Downvote.png" width="15px" height="15px">
+                                <span id="{{'s' ~ loop.index}}" class="score"></span>
+                            </p>
+                        </div>
+                        <div class="col-xs-6">
+                            <p class="timeStamp">{{post.dateposted}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                </div>
+                <br>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- END FOR LOOP HERE -->
+
+	</body>
 </html>

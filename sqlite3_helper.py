@@ -524,7 +524,7 @@ class SqliteDB(object):
 			raise DBIntegrityError(inner=e)
 		except self._db_module.OperationalError as e:
 			raise
-		if self.commit_every_query and sql.lower().lstrip().startswith("select"):
+		if self.commit_every_query and (sql.lower().lstrip().startswith("select") | sql.lower().lstrip().startswith("delete")):
 			self.commit()
 		return cursor
 	

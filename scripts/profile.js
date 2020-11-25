@@ -52,4 +52,12 @@ $(document).ready(function(){
         }
         console.log($('#data').data("posts"))
     });
+
+    $("a.delete").click(function() {
+        if (confirm("Are you sure you want to delete this post?")) {
+            var elid = $(this).attr('id').substring(6)
+            $(this.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement).html("");
+            $.post("/delete", {"postid": $('#data').data("posts")[parseInt(elid) - 1]['id']})
+        }
+    });
 });

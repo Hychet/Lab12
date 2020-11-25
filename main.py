@@ -17,12 +17,33 @@ app = flask.Flask(__name__)
 app.static_folder = app.root_path
 hdb = sqlite3_helper.SqliteDB(db_path=config.PATH_DATABASE, row_type="dict", placeholder="$", commit_every_query=True)
 
+def getDatePosted (dateposted):
+    dateposted = dateposted[:10] + " " + dateposted[11:]
+    totalSeconds = int((datetime.now() - datetime.strptime(dateposted, "%Y-%m-%d %H:%M:%S.%f")).total_seconds())
+    days = int(totalSeconds / (60 * 60 * 24))
+    hours = int(totalSeconds / (60 * 60))
+    minutes = int(totalSeconds / 60)
+    if days:
+        return str(days) + " days ago"
+    elif hours:
+        if minutes >= 30:
+            return str(hours) + " hours and 30 minutes ago"
+        else:
+            return str(hours) + " hours ago"
+    elif minutes >= 30:
+        return "30 minutes ago"
+    else:
+        return "Posted just now"
+
+
 @app.route("/<hashedcode>/profile", methods=['GET', 'POST'])
 def profile(hashedcode):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
     posts = hdb.select(['posts'], poster=username)
     votes = hdb.select('votes')
     for post in posts:
+        post['dateposted'] = getDatePosted(post['dateposted'])
+
         try:
             post['userVote'] = hdb.select_row('votes', username=username, postid=post['id'])['vote']
         except sqlite3_helper.DBItemNotFoundError:
@@ -48,7 +69,7 @@ def post(hashedcode,postid):
     except sqlite3_helper.DBItemNotFoundError:
         userVote = 0
     print(userVote)
-    return flask.render_template('post.html', postid=postid, posterHash=posterHash, userHash=hashedcode, userVote=userVote, poster=row['poster'], title=row['title'], content=row['content'], dateposted=row['dateposted'], score=row['score'])
+    return flask.render_template('post.html', postid=postid, posterHash=posterHash, userHash=hashedcode, userVote=userVote, poster=row['poster'], title=row['title'], content=row['content'], dateposted=getDatePosted(row['dateposted']), score=row['score'])
 
 @app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
 def feed(hashedcode):
@@ -81,6 +102,13 @@ def vote():
     newScore = hdb.select_row('votes', what="sum(vote)", postid=int(flask.request.form.get('postid')))['sum(vote)']
     hdb.update('posts', {'score' : newScore}, id=int(flask.request.form.get('postid')))
     print(hdb.select(['votes']))
+    return "ok"
+
+@app.route("/delete", methods=['POST'])
+def delete():
+    postid = int(flask.request.form.get('postid'))
+    hdb.delete("votes", where={"postid": postid})
+    hdb.delete("posts", where={"id": postid})
     return "ok"
 
 # This block is optional and can be used for testing .
