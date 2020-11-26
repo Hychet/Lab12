@@ -45,7 +45,6 @@ def getDatePosted(dateposted):
 def profile(hashedcode):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
     posts = hdb.select(['posts'], poster=username, order="dateposted DESC")
-    votes = hdb.select('votes')
     for post in posts:
         post['dateposted'] = getDatePosted(post['dateposted'])
 
@@ -82,11 +81,11 @@ def post(hashedcode, postid):
                                  dateposted=getDatePosted(row['dateposted']), score=row['score'])
 
 
-@app.route("/<hashedcode>/feed", methods=['GET', 'POST'])
-def feed(hashedcode):
+@app.route("/<hashedcode>/feed/<pagenum>", methods=['GET', 'POST'])
+def feed(hashedcode, pagenum):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
-    posts = hdb.select(['posts'], order=["dateposted DESC"], where={'poster': username}, notEqual=True)
-    votes = hdb.select('votes')
+    allPosts = hdb.select(['posts'], order=["dateposted DESC"], where={'poster': username}, notEqual=True)
+    posts = allPosts[(int(pagenum) - 1) * 5 : (int(pagenum) - 1) * 5 + 5]
     for post in posts:
         post['dateposted'] = getDatePosted(post['dateposted'])
         try:
@@ -96,9 +95,7 @@ def feed(hashedcode):
             post['userVote'] = 0
     postsJSON = json.dumps(posts)
     return flask.render_template('feed.html', username=username, userHash=hashedcode, posts=posts,
-                                 postsJSON=postsJSON)
-    # username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
-    # return flask.render_template('feed.html', username=username, hashedcode=int(hashedcode))
+                                 postsJSON=postsJSON, currPage=int(pagenum), numPages=int((len(allPosts) / 5) + 1))
 
 
 @app.route("/submit_register", methods=['POST'])
@@ -112,7 +109,7 @@ def submit_register():
     # return flask.redirect(flask.url_for(".feed", hashedcode=row['hash']))
 
     # VVVV FOR PHASE 1 DEMO ONLY VVVV
-    return flask.redirect(flask.url_for(".feed", hashedcode=row['hash']))
+    return flask.redirect(flask.url_for(".feed", hashedcode=row['hash'], pagenum=1))
 
 
 @app.route("/<hashedcode>/submit_post", methods=['POST'])

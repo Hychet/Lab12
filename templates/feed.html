@@ -16,7 +16,7 @@
         <div class="container-full">
             <div class="col-xs-2">
                 <!--<center><h3>Feed</h3></center>-->
-                <a href="/{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
+                <a href="/{{userHash}}/feed/1"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
             </div>
             <div class="col-xs-4">
                 <h3>Your feed</h3>
@@ -66,6 +66,16 @@
         </div>
         {% endfor %}
         <!-- END FOR LOOP HERE -->
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="{{'/' + userHash + '/feed/' ~ [1, currPage - 1]|max}}">Previous</a></li>
+            {% for page in range(numPages) %}
+            <li class="page-item"><a class="page-link" href="{{'/' + userHash + '/feed/' ~ (page + 1)}}">{{page + 1}}</a></li>
+            {% endfor %}
+            <li class="page-item"><a class="page-link" href="{{'/' + userHash + '/feed/' ~ [numPages, currPage + 1]|min}}">Next</a></li>
+          </ul>
+        </nav>
 
 	</body>
 </html>
