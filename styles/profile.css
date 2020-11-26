@@ -29,6 +29,7 @@ body {
 }
 
 .titleDeleteRow {
+    padding-right: 2px;
     background-color: #FFFFFF;
     border-radius: 10px;
     font-family: Verdana, sans-serif;

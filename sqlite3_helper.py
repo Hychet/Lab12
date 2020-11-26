@@ -171,12 +171,16 @@ class SqliteDB(object):
 		self._execute_query("pragma locking_mode = exclusive")
 		# See http://sqlite.org/cvstrac/wiki?p=KeyValueDatabase
 
-	def _select(self, tables, what, where, order, group, limit, offset, parameters, row_type, result_type, with_names, one_row, one_column, where_kw): 
+	def _select(self, tables, what, where, order, group, limit, offset, parameters, row_type, result_type, with_names, one_row, one_column, not_equal, where_kw):
 
 		# Build query
 		where_str,parameters = self._convert_where_and_vars(where, parameters, where_kw)
 		parts = ["SELECT", _combine(what), "FROM", _combine(tables)]
 		_add_clause(parts, "WHERE", where_str)
+
+		if not_equal & (where is not None):
+			parts[-1] = parts[-1].split('=')[0] + "!=" + parts[-1].split('=')[1]
+
 		_add_clause(parts, "ORDER BY", order)
 		_add_clause(parts, "GROUP BY", group)
 		_add_clause(parts, "LIMIT", limit, integer=True)
@@ -318,7 +322,7 @@ class SqliteDB(object):
 		else:
 			raise DBTooManyItemsError(sql, parameters)
 
-	def select(self, tables, what='*', where=None, order=None, group=None, limit=None, offset=None, parameters=None, with_names=False, row_type=None, result_type=None, **kw_where): 
+	def select(self, tables, what='*', where=None, order=None, group=None, limit=None, offset=None, parameters=None, with_names=False, row_type=None, result_type=None, notEqual=False, **kw_where):
 		return self._select(
 			tables		= tables,
 			what		= what,
@@ -333,6 +337,7 @@ class SqliteDB(object):
 			with_names	= with_names,
 			one_row		= False,
 			one_column	= False,
+			not_equal 	= notEqual,
 			where_kw	= kw_where,
 		)
 
@@ -351,6 +356,7 @@ class SqliteDB(object):
 			with_names	= False,
 			one_row		= False,
 			one_column	= True,
+			not_equal = False,
 			where_kw	= kw_where,
 		)
 
@@ -369,6 +375,7 @@ class SqliteDB(object):
 			with_names	= with_names,
 			one_row		= True,
 			one_column	= False,
+			not_equal=False,
 			where_kw	= kw_where,
 		)
 	
@@ -387,6 +394,7 @@ class SqliteDB(object):
 			with_names	= False,
 			one_row		= True,
 			one_column	= True,
+			not_equal=False,
 			where_kw	= kw_where,
 		)
 
@@ -400,7 +408,6 @@ class SqliteDB(object):
 			row = self.select_row((table,), *args, **kwargs)
 		except DBItemNotFoundError:
 			row_id = self.insert(table, *args, return_row_id=True, **kwargs)
-			#print(row_id)
 			row = self.select_row((table,), *args, rowid=row_id, **kwargs)
 		return row
 
@@ -519,6 +526,7 @@ class SqliteDB(object):
 		assert not isinstance(parameters, list), parameters
 		cursor = self._get_db_conn().cursor()
 		try:
+			print(sql, parameters)
 			cursor.execute(sql, parameters)
 		except self._db_module.IntegrityError as e:
 			raise DBIntegrityError(inner=e)
@@ -839,7 +847,7 @@ class SqliteDB(object):
 
 		assert isinstance(where_parts, list)
 		for k,v in _iteritems(where_dict):
-			assert _is_identifier(k), k # anti-injection paranoia
+			#assert _is_identifier(k), k # anti-injection paranoia
 			if v is None:
 				where_parts.append(("%s ISNULL"%k, True))
 			elif self._placeholder == "?":

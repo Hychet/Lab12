@@ -19,10 +19,10 @@
                 <a href="/{{userHash}}/feed"><img src="{{ url_for('static', filename='data/redditLogo.png') }}" width="88px" height="30px" class="redditLogo"></a>
             </div>
             <div class="col-xs-4">
-                <h3>{{username}}'s Feed</h3>
+                <h3>Your feed</h3>
             </div>
             <div id="createLink" class="col-xs-6">
-                <center><a href="/{{userHash}}/profile"><h3>Profile</h3></a></center>
+                <center><a href="/{{userHash}}/profile"><h3>{{username}}</h3></a></center>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
                             <div class="col-xs-10">
                                 <h4><a href="/{{userHash}}/posts/{{post.id}}">{{post.title}}</a></h4>
                             </div>
-                            <div class="delete col-xs-2">
-                                <center><p>delete</p></center>
+                            <div class="delete">
+                                <center><p><b>{{post.username}}</b></p></center>
                             </div>
                         </div>
                     </div>
