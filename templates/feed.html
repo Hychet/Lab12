@@ -31,7 +31,10 @@
         <div class="card container-fluid">
             <div class="card-body row">
                 <br>
-                <div class="col-xs-2">
+                <div class="profilePicture col-xs-2">
+                    {% if post.profilePicture %}
+                        <img src="../../../static/data/{{post.profilePicture}}" width="60px" height="60px">
+                    {% endif %}
                 </div>
                 <div class="col-xs-8">
                     <div class="container-full">

@@ -14,9 +14,9 @@ $(document).ready(function(){
     });
     $("img.upvote").click(function() {
         var elid = $(this).attr('id').substring(1)
-        console.log(elid)
         if($(this).attr("src") == '../../../static/data/Upvoted.png') {
             $(this).attr("src", "../../../static/data/Upvote.png")
+            console.log(elid)
             $.post("/vote", {"voterHash": $('#data').data("userhash"), "vote": 0, "postid": $('#data').data("posts")[parseInt(elid) - 1]['id']})
             $("#s" + elid).html("&nbsp;&nbsp;" + ($('#data').data("posts")[parseInt(elid) - 1]['score'] -= 1))
         }

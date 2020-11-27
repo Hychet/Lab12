@@ -52,7 +52,7 @@ def profile(hashedcode):
         post['dateposted'] = getDatePosted(post['dateposted'])
 
         try:
-            post['userVote'] = hdb.select_row('votes', what="sum(vote)", username=username, postid=post['id'])
+            post['userVote'] = hdb.select_row('votes', what="vote", username=username, postid=post['id'])['vote']
         except sqlite3_helper.DBItemNotFoundError:
             post['userVote'] = 0
     postsJSON = json.dumps(posts)
@@ -91,14 +91,17 @@ def feed(hashedcode, pagenum):
     posts = allPosts[(int(pagenum) - 1) * 5 : (int(pagenum) - 1) * 5 + 5]
     for post in posts:
         post['dateposted'] = getDatePosted(post['dateposted'])
+        post['username'] = hdb.select_row(['users'], username=post['poster'])['username']
+        posterHash = hdb.select_row(['users'], username=post['poster'])['hash']
+        post['profilePicture'] = hdb.select_row(["users"], what="profilePicture", hash=posterHash)['profilePicture']
         try:
-            post['username'] = hdb.select(['users'], username=post['poster'])[0]['username']
-            #post['userVote'] = hdb.select_row('votes', username=post['poster'], postid=post['id'])['vote']
+            post['userVote'] = hdb.select_row('votes', username=username, postid=post['id'])['vote']
         except sqlite3_helper.DBItemNotFoundError:
             post['userVote'] = 0
     postsJSON = json.dumps(posts)
-    return flask.render_template('feed.html', username=username, userHash=hashedcode, posts=posts,
-                                 postsJSON=postsJSON, currPage=int(pagenum), numPages=math.ceil((len(allPosts) / 5)))
+    return flask.render_template('feed.html', username=username, userHash=hashedcode,
+                                 posts=posts, postsJSON=postsJSON,
+                                 currPage=int(pagenum), numPages=math.ceil((len(allPosts) / 5)))
 
 
 @app.route("/submit_register", methods=['POST'])
@@ -127,11 +130,13 @@ def submit_post(hashedcode):
 
 @app.route("/vote", methods=['POST'])
 def vote():
+    print("vote")
     username = hdb.select_row(["users"], what="username", hash=int(flask.request.form.get('voterHash')))['username']
     hdb.upsert('votes', {"postid": flask.request.form.get('postid'), "username": username},
                postid=int(flask.request.form.get('postid')), username=username, vote=flask.request.form.get('vote'))
     newScore = hdb.select_row('votes', what="sum(vote)", postid=int(flask.request.form.get('postid')))['sum(vote)']
     hdb.update('posts', {'score': newScore}, id=int(flask.request.form.get('postid')))
+    print(hdb.select(['posts']))  # don't get rid of this
     return "ok"
 
 
