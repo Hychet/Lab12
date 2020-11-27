@@ -4,12 +4,19 @@
     <list default="true" id="ceef1a10-fba1-4949-8b49-5cdcc5e26ab6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/database.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/option1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/option1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/option2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/option2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/option3.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/option3.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/option4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/data/option4.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/data/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/register.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sqlite3_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlite3_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/register.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/feed.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/feed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/post.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/post.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

@@ -179,6 +179,7 @@ class SqliteDB(object):
 		_add_clause(parts, "WHERE", where_str)
 
 		if not_equal & (where is not None):
+			print(parts)
 			parts[-1] = parts[-1].split('=')[0] + "!=" + parts[-1].split('=')[1]
 
 		_add_clause(parts, "ORDER BY", order)

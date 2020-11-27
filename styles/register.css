@@ -79,3 +79,11 @@ body {
 .redditLogo {
     margin-top: 17px;
 }
+
+.profilePic {
+    margin-bottom: 10px;
+}
+
+.button input[type="radio"] {
+    display: none;
+}

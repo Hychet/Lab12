@@ -1,6 +1,7 @@
 # TODO: 1. Do pagination
 #       2. Do other extra credit
 #       3. Update JIRA to show everything's done and record hours spent
+#       4. Fix voting
 
 
 import os  # List of module import statements
@@ -11,6 +12,7 @@ import sqlite3_helper
 import config
 from datetime import datetime
 import json
+import math
 
 # ######################################################
 # No Module - Level Variables or Statements !
@@ -44,17 +46,18 @@ def getDatePosted(dateposted):
 @app.route("/<hashedcode>/profile", methods=['GET', 'POST'])
 def profile(hashedcode):
     username = hdb.select(["users"], what="username", hash=int(hashedcode))[0]['username']
+    profilePicture = hdb.select(["users"], what="profilePicture", hash=int(hashedcode))[0]['profilePicture']
     posts = hdb.select(['posts'], poster=username, order="dateposted DESC")
     for post in posts:
         post['dateposted'] = getDatePosted(post['dateposted'])
 
         try:
-            post['userVote'] = hdb.select_row('votes', username=username, postid=post['id'])['vote']
+            post['userVote'] = hdb.select_row('votes', what="sum(vote)", username=username, postid=post['id'])
         except sqlite3_helper.DBItemNotFoundError:
             post['userVote'] = 0
     postsJSON = json.dumps(posts)
     return flask.render_template('profile.html', username=username, userHash=hashedcode, posts=posts,
-                                 postsJSON=postsJSON)
+                                 postsJSON=postsJSON, profilePicture=profilePicture)
 
 
 @app.route("/<hashedcode>/create", methods=['GET', 'POST'])
@@ -95,16 +98,17 @@ def feed(hashedcode, pagenum):
             post['userVote'] = 0
     postsJSON = json.dumps(posts)
     return flask.render_template('feed.html', username=username, userHash=hashedcode, posts=posts,
-                                 postsJSON=postsJSON, currPage=int(pagenum), numPages=int((len(allPosts) / 5) + 1))
+                                 postsJSON=postsJSON, currPage=int(pagenum), numPages=math.ceil((len(allPosts) / 5)))
 
 
 @app.route("/submit_register", methods=['POST'])
 def submit_register():
+    profilePicture = flask.request.form.get('option')
     try:
         row = hdb.select_row(('users'), username=flask.request.form.get('username'))
     except sqlite3_helper.DBItemNotFoundError:
         hdb.insert(('users'), username=flask.request.form.get('username'),
-                   hash=hash(flask.request.form.get('username')))
+                   hash=hash(flask.request.form.get('username')), profilePicture=profilePicture)
         row = hdb.select_row(('users'), username=flask.request.form.get('username'))
     # return flask.redirect(flask.url_for(".feed", hashedcode=row['hash']))
 

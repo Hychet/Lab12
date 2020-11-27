@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="{{ url_for('static', filename='scripts/profile.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/register.js') }}"></script>
 	</head>
 
 	<body>
@@ -30,17 +30,30 @@
                 </div>
                 <div class="col-xs-8">
                     <div class = "d-flex align-self-center mainBlock">
-                        <form action="/submit_register" method="POST" id = "form">
+                        <form method="POST" id = "form" action="/submit_register">
                             <br>
                             <input type="text" class="form-control" name="username" placeholder="Username">
                             <br>
-                            &nbsp&nbsp
-                            <img src="../../../static/data/option1.jpg" width="90px" height="90px"> &nbsp&nbsp&nbsp&nbsp
-                            <img src="../../../static/data/option2.jpg" width="90px" height="90px"> &nbsp&nbsp&nbsp&nbsp
-                            <img src="../../../static/data/option3.jpg" width="90px" height="90px"> &nbsp&nbsp&nbsp&nbsp
-                            <img src="../../../static/data/option4.jpg" width="90px" height="90px"> &nbsp&nbsp&nbsp&nbsp
-                            <br>
-                            <br>
+
+                            <div class="button">
+                                <input type="radio" name="option" value="option1.jpg" id="option1Input" />
+                                <label for="option1Input"><img id="option1" class="profilePic" src="../../../static/data/option1.jpg"></label>
+                                &nbsp&nbsp&nbsp&nbsp
+                                <input type="radio" name="option" value="option2.jpg" id="option2Input" />
+                                <label for="option2Input"><img id="option2" class="profilePic" src="../../../static/data/option2.jpg"></label>
+                                &nbsp&nbsp&nbsp&nbsp
+                                <input type="radio" name="option" value="option3.jpg" id="option3Input" />
+                                <label for="option3Input"><img id="option3" class="profilePic" src="../../../static/data/option3.jpg"></label>
+                                &nbsp&nbsp&nbsp&nbsp
+                                <input type="radio" name="option" value="option4.jpg" id="option4Input"/>
+                                <label for="option4Input"><img id="option4" class="profilePic" src="../../../static/data/option4.jpg"></label>
+                                &nbsp&nbsp&nbsp&nbsp
+                            </div>
+                            <!--<a href="#"><img id="option1" class="profilePic" src="../../../static/data/option1.jpg"></a> &nbsp&nbsp&nbsp&nbsp
+                            <a href="#"><img id="option2" class="profilePic" src="../../../static/data/option2.jpg"></a> &nbsp&nbsp&nbsp&nbsp
+                            <a href="#"><img id="option3" class="profilePic" src="../../../static/data/option3.jpg"></a> &nbsp&nbsp&nbsp&nbsp
+                            <a href="#"><img id="option4" class="profilePic" src="../../../static/data/option4.jpg"></a> &nbsp&nbsp&nbsp&nbsp
+                            --><br>
                             <input type="submit" class="btn btn-primary" value="Register">
                         </form>
                     </div>
